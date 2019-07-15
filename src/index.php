@@ -15,7 +15,7 @@
         <input type="text" name="text" id="text">
         <button type="submit">Add</button>
     </form>
-    <?php foreach(Todo::getAll(getPDO()) as $item): ?>
+    <?php foreach(Todo::all(getPDO()) as $item): ?>
     <p>
         <?php echo $item->text; ?>
         <input type="checkbox" name="completed" id="completed" <?php echo $item->isCompleted ? 'checked' : ''?>>

@@ -15,17 +15,17 @@ class Todo extends Model
     $this->isCompleted = $isCompleted;
   }
 
-  public static function getAll(PDO $pdo)
+  public static function all(PDO $pdo)
   {
     $sql = 'select * from todo';
     foreach($pdo->query($sql) as $r){
-      yield new Todo($pdo, $r['text'], $r['completed']);
+      yield new Todo($pdo, $r['text'], $r['is_completed']);
     }
   }      
    
   public function save() 
   {
-    $sql = 'insert into todo (text, completed) values (?,?);';
+    $sql = 'insert into todo (text, is_completed) values (?,?);';
     $sth = $this->pdo->prepare($sql);
     $sth->execute([
       $this->text,
