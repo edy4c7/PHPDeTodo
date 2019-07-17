@@ -35,7 +35,7 @@ try {
                     <?php else: ?>
                         <?= htmlspecialchars($item->text) ?>
                     <?php endif ?>
-                    <button name="delete" class="btn-delete">delete</button>
+                    <button name="delete" class="btn btn-danger btn-delete">delete</button>
                 </li>
             <?php endforeach; ?>
         </ul>
