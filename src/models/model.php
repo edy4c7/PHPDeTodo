@@ -9,5 +9,10 @@ class Model
   {
     $this->pdo = $pdo;
   }
+
+  function __destruct()
+  {
+    $this->pdo = null;
+  }
 }
 /* End of file model.php */
