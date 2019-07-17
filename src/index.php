@@ -29,8 +29,8 @@ try {
         <ul>
             <?php foreach ($items as $item) : ?>
                 <li class="todo-item" data-todo-id="<?= $item->id ?>">
-                    <input type="checkbox" name="done" class="chk-done" <?= $item->isCompleted ? 'checked' : '' ?>>
-                    <?php if ($item->isCompleted): ?>
+                    <input type="checkbox" name="done" class="chk-done" <?= $item->isDone ? 'checked' : '' ?>>
+                    <?php if ($item->isDone): ?>
                         <del><?= htmlspecialchars($item->text) ?></del>
                     <?php else: ?>
                         <?= htmlspecialchars($item->text) ?>

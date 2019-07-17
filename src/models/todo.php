@@ -7,14 +7,16 @@ class Todo extends Model
 {
     public $id;
     public $text;
-    public $isCompleted;
+    public $isDone
+;
 
-    function __construct(PDO $pdo, ?int $id, string $text, bool $isCompleted = false)
+    function __construct(PDO $pdo, ?int $id, string $text, bool $isDone = false)
     {
         parent::__construct($pdo);
         $this->id = $id;
         $this->text = $text;
-        $this->isCompleted = $isCompleted;
+        $this->isDone = $isDone
+;
     }
 
     function __destruct()
@@ -24,9 +26,9 @@ class Todo extends Model
 
     public static function all(PDO $pdo)
     {
-        $sql = 'select * from todo order by is_completed';
+        $sql = 'select * from todo order by done';
         foreach ($pdo->query($sql) as $r) {
-            yield new Todo($pdo, $r['id'], $r['text'], $r['is_completed']);
+            yield new Todo($pdo, $r['id'], $r['text'], $r['done']);
         }
     }
 
@@ -36,23 +38,23 @@ class Todo extends Model
         $sth = $pdo->prepare($sql);
         $sth->execute([':id' => $id]);
         $result = $sth->fetch();
-        return new Todo($pdo, (int) $result['id'], $result['text'], $result['is_completed']);
+        return new Todo($pdo, (int) $result['id'], $result['text'], $result['done']);
     }
 
     public function save()
     {
         if ($this->id === null) {
-            $sql = 'insert into todo (text, is_completed) values (?,?);';
+            $sql = 'insert into todo (text, done) values (?,?);';
             $sth = $this->pdo->prepare($sql);
             $sth->execute([
                 $this->text,
-                (int) $this->isCompleted
+                (int) $this->isDone
             ]);
         } else {
-            $sql = 'update todo set is_completed = :is_completed where id = :id;';
+            $sql = 'update todo set done = :done where id = :id;';
             $sth = $this->pdo->prepare($sql);
             $sth->execute([
-                ":is_completed" => (int)$this->isCompleted,
+                ":done" => (int)$this->isDone,
                 ":id" => $this->id,
             ]);
         }
