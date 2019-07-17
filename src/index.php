@@ -23,18 +23,18 @@ try {
     <div class="container">
         <h1>PHP De Todo</h1>
         <form action="create.php" method="post">
-            <input type="text" name="text" id="text">
-            <button type="submit" name="submit">Add</button>
+            <div class="input-group">
+                <input class="form-control" type="text" name="text" id="text">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="submit" name="submit">Add</button>
+                </div>
+            </div>
         </form>
-        <ul>
+        <ul class="list-group">
             <?php foreach ($items as $item) : ?>
-                <li class="todo-item" data-todo-id="<?= $item->id ?>">
+                <li class="todo-item list-group-item <?= $item->isDone ? 'list-group-item-dark': '' ?>" data-todo-id="<?= $item->id ?>">
                     <input type="checkbox" name="done" class="chk-done" <?= $item->isDone ? 'checked' : '' ?>>
-                    <?php if ($item->isDone): ?>
-                        <del><?= htmlspecialchars($item->text) ?></del>
-                    <?php else: ?>
-                        <?= htmlspecialchars($item->text) ?>
-                    <?php endif ?>
+                    <?= htmlspecialchars($item->text) ?>
                     <button name="delete" class="btn btn-danger btn-delete">delete</button>
                 </li>
             <?php endforeach; ?>
