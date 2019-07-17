@@ -1,9 +1,9 @@
 <?php
 require_once('models/todo.php');
 require_once('db.php');
-if (isset($_GET['id'])) {
+if (isset($_POST['id'])) {
     try {
-        $todo = Todo::find(getPDO(), $_GET['id']);
+        $todo = Todo::find(getPDO(), $_POST['id']);
         $todo->delete();
     } catch (PDOException $e) {
         header('Content-Type: text/plain; charset=UTF-8', true, 500);
