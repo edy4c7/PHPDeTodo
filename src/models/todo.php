@@ -7,16 +7,14 @@ class Todo extends Model
 {
     public $id;
     public $text;
-    public $isDone
-;
+    public $isDone;
 
     function __construct(PDO $pdo, ?int $id, string $text, bool $isDone = false)
     {
         parent::__construct($pdo);
         $this->id = $id;
         $this->text = $text;
-        $this->isDone = $isDone
-;
+        $this->isDone = $isDone;
     }
 
     function __destruct()
@@ -54,8 +52,8 @@ class Todo extends Model
             $sql = 'update todo set done = :done where id = :id;';
             $sth = $this->pdo->prepare($sql);
             $sth->execute([
-                ":done" => (int)$this->isDone,
-                ":id" => $this->id,
+                ':done' => (int) $this->isDone,
+                ':id' => $this->id,
             ]);
         }
     }
@@ -65,7 +63,7 @@ class Todo extends Model
         $sql = 'delete from todo where id = :id;';
         $sth = $this->pdo->prepare($sql);
         $sth->execute([
-            ":id" => $this->id,
+            ':id' => $this->id,
         ]);
     }
 }

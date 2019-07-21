@@ -32,7 +32,7 @@ try {
         </form>
         <ul class="list-group">
             <?php foreach ($items as $item) : ?>
-                <li class="todo-item list-group-item <?= $item->isDone ? 'list-group-item-dark': '' ?>" data-todo-id="<?= $item->id ?>">
+                <li class="todo-item list-group-item <?= $item->isDone ? 'list-group-item-dark' : '' ?>" data-todo-id="<?= $item->id ?>">
                     <input type="checkbox" name="done" class="chk-done" <?= $item->isDone ? 'checked' : '' ?>>
                     <?= htmlspecialchars($item->text) ?>
                     <button name="delete" class="btn btn-danger btn-delete">delete</button>
