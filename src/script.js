@@ -19,6 +19,9 @@
             .done(function () {
                 location.reload();
             })
+            .fail(function() {
+                window.alert('Error!');
+            })
         },
         'delete': function() {
             if(!window.confirm('消しちゃうの?')) return;
@@ -29,6 +32,9 @@
             })
             .done(function () {
                 location.reload();
+            })
+            .fail(function() {
+                window.alert('Error!');
             })
         }
     });
