@@ -1,20 +1,25 @@
 (function ($) {
   //カスタムイベント設定
-  $('.todo-item').each(function (i, e) {
-    $(e).children('.chk-done').on('change', function () {
-      $(e).trigger('done-change');
+  $('.todo-item').each(function (i, val) {
+    $(val).children('.chk-done').on('change', function (e) {
+      $(val).trigger('done-change', {
+        'done': $(e.target).prop('checked')
+      });
     });
-    $(e).children('.btn-delete').on('click', function () {
-      $(e).trigger('delete');
+    $(val).children('.btn-delete').on('click', function () {
+      $(val).trigger('delete');
     });
   });
 
   $('.todo-item').on({
-    'done-change': function () {
+    'done-change': function (e, param) {
       $.ajax({
         url: 'update.php',
         method: 'POST',
-        data: { 'id': $(this).data('todo-id') },
+        data: {
+          id: $(e.target).data('todo-id'),
+          done: param.done
+        },
       })
         .done(function () {
           location.reload();
