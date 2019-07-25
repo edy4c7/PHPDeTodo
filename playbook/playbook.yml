@@ -1,0 +1,48 @@
+- hosts: all
+  become: yes
+  tasks: 
+    - name: disable SELinux
+      selinux:
+        state: disabled
+    - name: install epel-release
+      yum: 
+        name: epel-release
+    - name: add repo
+      yum:
+        name: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+        state: latest
+    - name: install apache
+      yum:
+        name: httpd
+        state: latest
+    - name: change owner of document root
+      file:
+        path: /var/www
+        owner: apache
+        group: apache
+        mode: 0755
+        recurse: true
+    - name: install sqlite3
+      yum:
+        name: sqlite
+        state: latest
+    - name: change owner of sqlite3 dir
+      file:
+        path: /var/lib/sqlite3
+        owner: apache
+        group: apache
+        mode: 0755
+        recurse: true
+    - name: install php
+      yum:
+        name: 
+          - php
+          - php-sqlite3
+        enablerepo: "remi,remi-php73"
+        state: latest
+    - name: start apache
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
