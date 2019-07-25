@@ -1,6 +1,6 @@
 <?php
 require_once('models/todo.php');
-require_once('db.php');
+require_once('utils/db.php');
 try {
     $items = Todo::all(getPDO());
 } catch (PDOException $e) {

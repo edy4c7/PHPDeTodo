@@ -1,6 +1,6 @@
 <?php
 require_once('models/todo.php');
-require_once('db.php');
+require_once('utils/db.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         $todo = new Todo(getPDO(), null, $_POST['text']);

@@ -1,6 +1,6 @@
 <?php
 require_once('models/todo.php');
-require_once('db.php');
+require_once('utils/db.php');
 require_once('utils/post_parser.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
