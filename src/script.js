@@ -1,46 +1,55 @@
-(function ($) {
-  //カスタムイベント設定
-  $('.todo-item').each(function (i, val) {
-    $(val).children('.chk-done').on('change', function (e) {
-      $(val).trigger('done-change', {
-        'done': $(e.target).prop('checked')
+(() => {
+  // カスタムイベント登録
+  document.querySelectorAll(".todo-item").forEach((itemTodo) => {
+    itemTodo.querySelectorAll(".chk-done").forEach((itemDone) => {
+      itemDone.addEventListener("change", (e) => {
+        itemTodo.dispatchEvent(new CustomEvent("update", {
+          detail: {
+            done: e.target.checked
+          }
+        }));
       });
     });
-    $(val).children('.btn-delete').on('click', function () {
-      $(val).trigger('delete');
+    itemTodo.querySelectorAll(".btn-delete").forEach((itemDel) => {
+      itemDel.addEventListener("click", () => {
+        itemTodo.dispatchEvent(new CustomEvent("delete"));
+      });
     });
   });
 
-  $('.todo-item').on({
-    'done-change': function (e, param) {
-      $.ajax({
-        url: 'update.php',
-        method: 'POST',
-        data: {
-          id: $(e.target).data('todo-id'),
-          done: param.done
-        },
+  document.querySelectorAll(".todo-item").forEach((item) => {
+    item.addEventListener("update", (e) => {
+      postJSONAsync("update.php", {
+        id: e.target.dataset.todoId,
+        done: e.detail.done
       })
-        .done(function () {
-          location.reload();
-        })
-        .fail(function () {
-          window.alert('Error!');
-        })
-    },
-    'delete': function () {
-      if (!window.confirm('消しちゃうの?')) return;
-      $.ajax({
-        url: 'delete.php',
-        method: 'POST',
-        data: { 'id': $(this).data('todo-id') },
+      .then(emitTodoListUpdate)
+      .catch(() => window.alert('error!'));
+    });
+    item.addEventListener("delete", (e) => {
+      postJSONAsync("delete.php", {
+        id: e.target.dataset.todoId,
       })
-        .done(function () {
-          location.reload();
-        })
-        .fail(function () {
-          window.alert('Error!');
-        })
-    }
+      .then(emitTodoListUpdate);
+    });
   });
-})(jQuery);
+
+  document.querySelector('.todo-list').addEventListener("update", () => {
+    location.reload();
+  });
+
+  function postJSONAsync(url, data){
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.addEventListener('load', resolve);
+      xhr.addEventListener('error', reject);
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.send(JSON.stringify(data));
+    });
+  }
+
+  function emitTodoListUpdate() {
+    document.querySelector('.todo-list').dispatchEvent(new CustomEvent("update"));
+  }
+})();

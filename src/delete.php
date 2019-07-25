@@ -1,9 +1,12 @@
 <?php
 require_once('models/todo.php');
 require_once('db.php');
-if (isset($_POST['id'])) {
+require_once('utils/post_parser.php');
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
-        $todo = Todo::find(getPDO(), $_POST['id']);
+        $post_parser = new PostParser();
+        $id = (int)$post_parser->getValue('id');
+        $todo = Todo::find(getPDO(), $id);
         $todo->delete();
     } catch (PDOException $e) {
         header('Content-Type: text/plain; charset=UTF-8', true, 500);
