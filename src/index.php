@@ -1,8 +1,10 @@
 <?php
 require_once('models/todo.php');
+require_once('models/repositories/todo_repository.php');
 require_once('utils/db.php');
 try {
-    $items = Todo::all(getPDO());
+    $dao = new TodoRepository(getPDO());
+    $items = $dao->findAll();
 } catch (PDOException $e) {
     header('Content-Type: text/plain; charset=UTF-8', true, 500);
     exit();
